@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi Schnauzer Virtual</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background: linear-gradient(#87CEEB,#dff6ff);
+    text-align:center;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:600px;
+    margin:auto;
+    background:white;
+    padding:20px;
+    border-radius:20px;
+    box-shadow:0 0 15px rgba(0,0,0,.2);
+}
+
+.dog{
+    font-size:120px;
+    margin:10px;
+}
+
+.stat{
+    margin:15px 0;
+}
+
+.bar{
+    width:100%;
+    height:25px;
+    background:#ddd;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.fill{
+    height:100%;
+    transition:0.3s;
+}
+
+#hungerFill{
+    background:#ff9800;
+}
+
+#happyFill{
+    background:#4caf50;
+}
+
+#energyFill{
+    background:#2196f3;
+}
+
+button{
+    padding:12px 18px;
+    margin:5px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+.feed{background:#ff9800;color:white;}
+.play{background:#4caf50;color:white;}
+.sleep{background:#2196f3;color:white;}
+
+#message{
+    margin-top:15px;
+    font-weight:bold;
+    font-size:18px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🐶 Mi Schnauzer Virtual</h1>
+
+    <div class="dog" id="dog">🐕</div>
+
+    <div class="stat">
+        <p>🍖 Hambre</p>
+        <div class="bar">
+            <div id="hungerFill" class="fill"></div>
+        </div>
+    </div>
+
+    <div class="stat">
+        <p>😃 Felicidad</p>
+        <div class="bar">
+            <div id="happyFill" class="fill"></div>
+        </div>
+    </div>
+
+    <div class="stat">
+        <p>⚡ Energía</p>
+        <div class="bar">
+            <div id="energyFill" class="fill"></div>
+        </div>
+    </div>
+
+    <button class="feed" onclick="feedDog()">Dar comida</button>
+    <button class="play" onclick="playDog()">Jugar</button>
+    <button class="sleep" onclick="sleepDog()">Dormir</button>
+
+    <div id="message">Tu schnauzer está feliz.</div>
+</div>
+
+<script>
+let hunger = 80;
+let happiness = 80;
+let energy = 80;
+
+function updateBars(){
+    document.getElementById("hungerFill").style.width = hunger + "%";
+    document.getElementById("happyFill").style.width = happiness + "%";
+    document.getElementById("energyFill").style.width = energy + "%";
+
+    const dog = document.getElementById("dog");
+    const message = document.getElementById("message");
+
+    if(hunger < 20){
+        dog.textContent = "🥺";
+        message.textContent = "Tengo mucha hambre.";
+    }
+    else if(energy < 20){
+        dog.textContent = "😴";
+        message.textContent = "Estoy muy cansado.";
+    }
+    else if(happiness < 20){
+        dog.textContent = "😢";
+        message.textContent = "Quiero jugar.";
+    }
+    else{
+        dog.textContent = "🐕";
+        message.textContent = "Tu schnauzer está feliz.";
+    }
+
+    if(hunger <= 0 || happiness <= 0){
+        message.textContent = "¡Has descuidado a tu schnauzer!";
+    }
+}
+
+function feedDog(){
+    hunger = Math.min(100, hunger + 20);
+    updateBars();
+}
+
+function playDog(){
+    if(energy > 10){
+        happiness = Math.min(100, happiness + 15);
+        energy -= 10;
+        hunger -= 5;
+    }
+    updateBars();
+}
+
+function sleepDog(){
+    energy = Math.min(100, energy + 25);
+    updateBars();
+}
+
+setInterval(() => {
+    hunger = Math.max(0, hunger - 2);
+    happiness = Math.max(0, happiness - 1);
+    energy = Math.max(0, energy - 1);
+
+    updateBars();
+}, 3000);
+
+updateBars();
+</script>
+
+</body>
+</html>
